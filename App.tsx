@@ -1,12 +1,6 @@
 import { useState } from "react";
-import {
-  Button,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-} from "react-native";
+import { Button, StyleSheet, TextInput, View } from "react-native";
+import TaskList from "./components/TaskList";
 
 export default function App() {
   const [inputText, setInputText] = useState<string>("");
@@ -26,17 +20,7 @@ export default function App() {
         />
         <Button title="Add Task" onPress={handleAddATask} />
       </View>
-      <View style={styles.listContainer}>
-        <ScrollView>
-          {taskList?.map((task, i) => {
-            return (
-              <View key={i} style={styles.listItems}>
-                <Text style={styles.listText}>{task}</Text>
-              </View>
-            );
-          })}
-        </ScrollView>
-      </View>
+      <TaskList taskList={taskList} />
     </View>
   );
 }
@@ -60,20 +44,5 @@ const styles = StyleSheet.create({
     padding: 10,
     borderWidth: 1,
     borderColor: "#cccccc",
-  },
-  listContainer: {
-    flex: 4,
-  },
-  listItems: {
-    margin: 5,
-    backgroundColor: "yellowgreen",
-    borderRadius: 6,
-    //border radius on <Text> is not supported on ios as native component in which <Text> will convert does not support boreder raduis
-    //therefore wel will wrap the <Text> in View
-    padding: 8,
-  },
-  listText: {
-    color: "white",
-    fontSize: 15,
   },
 });
