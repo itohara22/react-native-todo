@@ -1,20 +1,26 @@
-import { View, Text, StyleSheet } from "react-native";
-
-type ItemData = {
-  index: number;
-  item: string;
-  separators: any;
-};
+import { View, Text, StyleSheet, Pressable } from "react-native";
 
 type Props = {
-  itemData: ItemData;
+  itemId: number;
+  itemText: string;
+  isCompleted: boolean;
+  toggleComplete: (arg: number) => void;
 };
 
-const ListItem = ({ itemData }: Props) => {
-  console.log(itemData);
+const ListItem = ({ itemText, isCompleted, itemId, toggleComplete }: Props) => {
+  console.log(itemText);
+
+  function handleTouch() {
+    toggleComplete(itemId);
+  }
   return (
-    <View key={itemData.index} style={styles.listItems}>
-      <Text style={styles.listText}>{itemData.item}</Text>
+    <View style={styles.listItems}>
+      <Text style={isCompleted ? styles.strikeThrough : styles.listText}>
+        {itemText}
+      </Text>
+      <Pressable style={styles.button} onPress={handleTouch}>
+        <Text>Cross out</Text>
+      </Pressable>
     </View>
   );
 };
@@ -22,15 +28,30 @@ const ListItem = ({ itemData }: Props) => {
 const styles = StyleSheet.create({
   listItems: {
     margin: 5,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
     backgroundColor: "yellowgreen",
     borderRadius: 6,
-    //border radius on <Text> is not supported on ios as native component in which <Text> will convert does not support boreder raduis
+    //border radius on <Text> is not supported on ios as nativehcomponent
+    //in which <Text> will convert does not support boreder raduis
     //therefore wel will wrap the <Text> in View
-    padding: 8,
+    padding: 5,
   },
   listText: {
     color: "white",
-    fontSize: 15,
+    fontSize: 18,
+  },
+  strikeThrough: {
+    color: "white",
+    fontSize: 18,
+    textDecorationLine: "line-through",
+    textDecorationColor: "black",
+  },
+  button: {
+    backgroundColor: "white",
+    padding: 6,
+    borderRadius: 4,
   },
 });
 

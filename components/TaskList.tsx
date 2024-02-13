@@ -1,18 +1,30 @@
-import { StyleSheet, View, FlatList, Text } from "react-native";
+import { StyleSheet, View, FlatList } from "react-native";
 import ListItem from "./ListItem";
 
+type TaskListType = { text: string; id: number; isCompleted: boolean };
 type Props = {
-  taskList: string[];
+  taskList: TaskListType[];
+  toggleComplete: (arg: number) => void;
 };
 
-const TaskList = ({ taskList }: Props) => {
+const TaskList = ({ taskList, toggleComplete }: Props) => {
   return (
     <View style={styles.listContainer}>
       <FlatList
         data={taskList}
+        keyExtractor={(item: any, index: any) => {
+          return item.id;
+        }}
         renderItem={(itemData) => {
           console.log(itemData);
-          return <ListItem itemData={itemData} />;
+          return (
+            <ListItem
+              toggleComplete={toggleComplete}
+              itemText={itemData.item.text}
+              itemId={itemData.item.id}
+              isCompleted={itemData.item.isCompleted}
+            />
+          );
         }}
       />
     </View>

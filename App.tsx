@@ -1,26 +1,40 @@
 import { useState } from "react";
 import { Button, StyleSheet, TextInput, View } from "react-native";
 import TaskList from "./components/TaskList";
+import TaskInput from "./components/TaskInput";
+
+type TaskListType = { text: string; id: number; isCompleted: boolean };
 
 export default function App() {
   const [inputText, setInputText] = useState<string>("");
-  const [taskList, setTaskList] = useState<string[]>([]);
+  const [taskList, setTaskList] = useState<TaskListType[]>([]);
 
   const handleAddATask = () => {
-    setTaskList((prev) => [inputText, ...prev]);
+    setTaskList((prev) => [
+      { text: inputText, id: Math.random(), isCompleted: false },
+      ...prev,
+    ]);
     setInputText("");
   };
+
+  function toggleComplete(id: number) {
+    setTaskList((prevTasks) => {
+      return prevTasks.map((task) => {
+        if (task.id === id) {
+          return { ...task, isCompleted: !task.isCompleted };
+        }
+        return task;
+      });
+    });
+  }
   return (
     <View style={styles.container}>
-      <View style={styles.inputContainer}>
-        <TextInput
-          style={styles.textInput}
-          value={inputText}
-          onChangeText={setInputText}
-        />
-        <Button title="Add Task" onPress={handleAddATask} />
-      </View>
-      <TaskList taskList={taskList} />
+      <TaskInput
+        inputText={inputText}
+        setInputText={setInputText}
+        handleAddATask={handleAddATask}
+      />
+      <TaskList taskList={taskList} toggleComplete={toggleComplete} />
     </View>
   );
 }
@@ -30,19 +44,5 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingTop: 50,
     paddingHorizontal: 15,
-  },
-  inputContainer: {
-    flex: 1,
-    borderBottomColor: "#cccccc",
-    borderBottomWidth: 2,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  textInput: {
-    width: "70%",
-    padding: 10,
-    borderWidth: 1,
-    borderColor: "#cccccc",
   },
 });
