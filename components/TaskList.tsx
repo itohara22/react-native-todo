@@ -5,9 +5,10 @@ type TaskListType = { text: string; id: number; isCompleted: boolean };
 type Props = {
   taskList: TaskListType[];
   toggleComplete: (arg: number) => void;
+  deleteTask: (arg: number) => void;
 };
 
-const TaskList = ({ taskList, toggleComplete }: Props) => {
+const TaskList = ({ taskList, toggleComplete, deleteTask }: Props) => {
   return (
     <View style={styles.listContainer}>
       <FlatList
@@ -20,6 +21,7 @@ const TaskList = ({ taskList, toggleComplete }: Props) => {
           return (
             <ListItem
               toggleComplete={toggleComplete}
+              deleteTask={deleteTask}
               itemText={itemData.item.text}
               itemId={itemData.item.id}
               isCompleted={itemData.item.isCompleted}

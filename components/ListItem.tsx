@@ -1,26 +1,46 @@
-import { View, Text, StyleSheet, Pressable } from "react-native";
+import { View, Text, StyleSheet, Pressable, Image } from "react-native";
 
 type Props = {
   itemId: number;
   itemText: string;
   isCompleted: boolean;
   toggleComplete: (arg: number) => void;
+  deleteTask: (arg: number) => void;
 };
 
-const ListItem = ({ itemText, isCompleted, itemId, toggleComplete }: Props) => {
+const ListItem = ({
+  itemText,
+  isCompleted,
+  itemId,
+  toggleComplete,
+  deleteTask,
+}: Props) => {
   console.log(itemText);
 
-  function handleTouch() {
+  function handleToggle() {
     toggleComplete(itemId);
   }
+
+  function handleDelete() {
+    deleteTask(itemId);
+  }
+
   return (
     <View style={styles.listItems}>
       <Text style={isCompleted ? styles.strikeThrough : styles.listText}>
         {itemText}
       </Text>
-      <Pressable style={styles.button} onPress={handleTouch}>
-        <Text>Cross out</Text>
-      </Pressable>
+      <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
+        <Pressable style={styles.button} onPress={handleToggle}>
+          <Text>Done</Text>
+        </Pressable>
+        <Pressable onPress={handleDelete}>
+          <Image
+            style={{ width: 30, height: 30 }}
+            source={require("../assets/cross.png")}
+          />
+        </Pressable>
+      </View>
     </View>
   );
 };

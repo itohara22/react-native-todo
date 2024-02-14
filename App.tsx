@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button, StyleSheet, TextInput, View } from "react-native";
+import { Button, StyleSheet, TextInput, View, Image } from "react-native";
 import TaskList from "./components/TaskList";
 import TaskInput from "./components/TaskInput";
 
@@ -9,13 +9,13 @@ export default function App() {
   const [inputText, setInputText] = useState<string>("");
   const [taskList, setTaskList] = useState<TaskListType[]>([]);
 
-  const handleAddATask = () => {
+  function handleAddATask() {
     setTaskList((prev) => [
       { text: inputText, id: Math.random(), isCompleted: false },
       ...prev,
     ]);
     setInputText("");
-  };
+  }
 
   function toggleComplete(id: number) {
     setTaskList((prevTasks) => {
@@ -27,6 +27,13 @@ export default function App() {
       });
     });
   }
+
+  function deleteTask(id: number) {
+    setTaskList((prevTasks) => {
+      return prevTasks.filter((task) => task.id !== id);
+    });
+  }
+
   return (
     <View style={styles.container}>
       <TaskInput
@@ -34,7 +41,11 @@ export default function App() {
         setInputText={setInputText}
         handleAddATask={handleAddATask}
       />
-      <TaskList taskList={taskList} toggleComplete={toggleComplete} />
+      <TaskList
+        taskList={taskList}
+        toggleComplete={toggleComplete}
+        deleteTask={deleteTask}
+      />
     </View>
   );
 }
